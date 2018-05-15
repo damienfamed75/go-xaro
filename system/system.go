@@ -27,6 +27,7 @@ func SystemInit() {
 	KeyBindings["left"] = raylib.KeyLeft
 	KeyBindings["right"] = raylib.KeyRight
 	KeyBindings["up"] = raylib.KeyUp
+	KeyBindings["down"] = raylib.KeyDown
 	KeyBindings["action"] = raylib.KeyX
 	KeyBindings["menu"] = raylib.KeyEnter
 }

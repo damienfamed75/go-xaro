@@ -20,23 +20,27 @@ func main() {
 	system.SystemInit()
 	player := newPlayer()
 
-	plats := []gameobjects.Platform{
-		gameobjects.NewPlatform(300, 500, 200, 10, r.Maroon),
-		gameobjects.NewPlatform(100, 450, 150, 10, r.Pink),
+	walls := []gameobjects.Wall{
+		gameobjects.NewWall(0, 600, 640, 40, r.Maroon),
+		gameobjects.NewWall(0, 0, 40, 640, r.Pink),
+		gameobjects.NewWall(0, 0, 640, 40, r.Orange),
+		gameobjects.NewWall(600, 0, 40, 640, r.Gold),
+		gameobjects.NewWall(280, 0, 80, 120, r.Yellow),
 	}
+
 	/*********************Game Loop*********************/
 	for !r.WindowShouldClose() {
 		/************Update************/
 		system.EscapeCheck()
 
-		player.update(r.GetFrameTime(), plats)
+		player.update(r.GetFrameTime(), walls)
 		/***********Drawing***********/
 		r.BeginDrawing()
 		{
 			r.ClearBackground(r.Black)
 
 			player.draw()
-			gameobjects.DrawPlatforms(plats...)
+			gameobjects.DrawPlatforms(walls...)
 		}
 		r.EndDrawing()
 	}

@@ -83,7 +83,7 @@
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2.8",
-  "image": "/Users/sta8071/projects/nm/gocode/src/github.com/damienfamed75/go-xaro/assets/graphics/samus.png",
+  "image": "./samus.png",
   "format": "I8",
   "size": { "w": 360, "h": 43 },
   "scale": "1",

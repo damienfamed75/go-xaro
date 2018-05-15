@@ -9,13 +9,12 @@ import (
 
 // Player is the object of the played protagonist
 type Player struct {
-	Ase         goaseprite.AsepriteFile // The animation file and meta data
-	Texture     raylib.Texture2D        // The current image on the player
-	Velocity    raylib.Vector2          // Velocity applied to player every frame
-	Position    raylib.Vector2          // Position (anchor top left)
-	Scale       float32                 // Multiplier for how large the player is on the screen
-	facingRight bool                    // Whether the player is facing right or left
-	grounded    bool                    // If the player is on the ground
+	Ase       goaseprite.AsepriteFile // The animation file and meta data
+	Texture   raylib.Texture2D        // The current image on the player
+	Velocity  raylib.Vector2          // Velocity applied to player every frame
+	Position  raylib.Vector2          // Position (anchor top left)
+	Scale     float32                 // Multiplier for how large the player is on the screen
+	direction string                  // Whether the player is facing right or left
 }
 
 const gravity = 400
@@ -33,8 +32,7 @@ func newPlayer() Player {
 	p.Texture = system.GetTexture(p.Ase.ImagePath)
 	p.Velocity = raylib.NewVector2(0, 0)
 	p.Position = raylib.NewVector2(float32(system.HalfW()), float32(system.HalfH()-p.Ase.FrameHeight))
-	p.facingRight = true
-	p.grounded = false
+	p.direction = "right"
 	p.Scale = 1.5
 
 	// Queues the Run animation
@@ -44,43 +42,28 @@ func newPlayer() Player {
 }
 
 // Update runs every frame and should be used for inputs or effects on the player
-func (p *Player) update(dt float32, plats []gameobjects.Platform) {
+func (p *Player) update(dt float32, walls []gameobjects.Wall) {
 	p.Ase.Update(dt) // Run this every single frame to keep the animation going
 
 	p.Velocity.X = 0
-	p.Velocity.Y += gravity * dt // Apply gravity by default
+	p.Velocity.Y = 0
 
 	// Movement bindings for player movement
 	if raylib.IsKeyDown(system.KeyBindings["left"]) {
 		p.Velocity.X = -moveSpd
-		p.facingRight = false
+		p.direction = "left"
 	}
 	if raylib.IsKeyDown(system.KeyBindings["right"]) {
 		p.Velocity.X = +moveSpd
-		p.facingRight = true
+		p.direction = "right"
 	}
-
-	// Finding if the player is touching the ground or not
-	p.grounded = false
-	if p.Velocity.Y >= 0 {
-		for _, pl := range plats {
-			if p.Position.X+float32(p.Ase.FrameWidth) <= pl.Bounds.X || p.Position.X >= pl.Bounds.X+float32(pl.Bounds.Width) {
-				continue
-			}
-			if p.Position.Y+float32(p.Ase.FrameHeight) <= pl.Bounds.Y-(pl.Bounds.Height*2) || p.Position.Y > pl.Bounds.Y+pl.Bounds.Height {
-				continue
-			}
-			if p.Position.Y+float32(p.Ase.FrameHeight) > pl.Bounds.Y-(pl.Bounds.Height*1.9) {
-				p.Position.Y-- // push player up if they're sunken into the platform
-			}
-			p.Velocity.Y = 0
-			p.grounded = true
-		}
+	if raylib.IsKeyDown(system.KeyBindings["up"]) {
+		p.Velocity.Y = -moveSpd
+		p.direction = "up"
 	}
-
-	// If jumping and on the ground
-	if p.grounded && raylib.IsKeyDown(system.KeyBindings["up"]) {
-		p.Velocity.Y = jumpFrc
+	if raylib.IsKeyDown(system.KeyBindings["down"]) {
+		p.Velocity.Y = +moveSpd
+		p.direction = "down"
 	}
 
 	// Apply the velocity to player's position
@@ -92,16 +75,18 @@ func (p *Player) update(dt float32, plats []gameobjects.Platform) {
 func (p *Player) draw() {
 	srcX, srcY := p.Ase.GetFrameXY()
 
-	var playerWidth float32
-	if p.facingRight == true {
-		playerWidth = float32(+p.Ase.FrameWidth)
-	} else {
+	playerWidth := float32(+p.Ase.FrameWidth)   // default value is upright
+	playerHeight := float32(+p.Ase.FrameHeight) // default value is facing right
+
+	if p.direction == "left" {
 		playerWidth = float32(-p.Ase.FrameWidth)
-	} // flips the character around whether or not the player is facing right
+	} else if p.direction == "down" {
+		playerHeight = float32(-p.Ase.FrameHeight)
+	}
 
 	// The entire hitbox of the player
 	src := raylib.NewRectangle(srcX, srcY,
-		playerWidth, float32(p.Ase.FrameHeight))
+		playerWidth, playerHeight)
 
 	// Drawing destination of the player
 	dest := raylib.NewRectangle(float32(p.Position.X), float32(p.Position.Y),
