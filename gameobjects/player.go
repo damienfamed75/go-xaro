@@ -1,7 +1,6 @@
-package main
+package gameobjects
 
 import (
-	"github.com/damienfamed75/go-xaro/gameobjects"
 	"github.com/damienfamed75/go-xaro/system"
 	"github.com/gen2brain/raylib-go/raylib"
 	"github.com/solarlune/GoAseprite"
@@ -25,13 +24,13 @@ var (
 )
 
 // NewPlayer generates a new player object
-func newPlayer() Player {
+func NewPlayer() Player {
 	p := Player{}
 
 	p.Ase = goaseprite.New("assets/graphics/samus.json")
 	p.Texture = system.GetTexture(p.Ase.ImagePath)
 	p.Velocity = raylib.NewVector2(0, 0)
-	p.Position = raylib.NewVector2(float32(system.HalfW()), float32(system.HalfH()-p.Ase.FrameHeight))
+	p.Position = raylib.NewVector2(float32(system.HalfW())-float32((p.Ase.FrameWidth/2)), float32(system.HalfH())-float32((p.Ase.FrameHeight/2)))
 	p.direction = "right"
 	p.Scale = 1.5
 
@@ -42,7 +41,7 @@ func newPlayer() Player {
 }
 
 // Update runs every frame and should be used for inputs or effects on the player
-func (p *Player) update(dt float32, walls []gameobjects.Wall) {
+func (p *Player) Update(dt float32, walls []Wall) (raylib.Vector2, raylib.Vector2) {
 	p.Ase.Update(dt) // Run this every single frame to keep the animation going
 
 	p.Velocity.X = 0
@@ -67,12 +66,16 @@ func (p *Player) update(dt float32, walls []gameobjects.Wall) {
 	}
 
 	// Apply the velocity to player's position
-	p.Position.X += p.Velocity.X * dt
-	p.Position.Y += p.Velocity.Y * dt
+	difference := raylib.NewVector2(p.Velocity.X*dt, p.Velocity.Y*dt)
+
+	p.Position.X += difference.X
+	p.Position.Y += difference.Y
+
+	return difference, raylib.Vector2{X: p.Position.X, Y: p.Position.Y}
 }
 
 // Draw runs every frame and should only be used for rendering
-func (p *Player) draw() {
+func (p *Player) Draw() {
 	srcX, srcY := p.Ase.GetFrameXY()
 
 	playerWidth := float32(+p.Ase.FrameWidth)   // default value is upright
@@ -85,7 +88,7 @@ func (p *Player) draw() {
 	}
 
 	// The entire hitbox of the player
-	src := raylib.NewRectangle(srcX, srcY,
+	src := raylib.NewRectangle(float32(srcX), float32(srcY),
 		playerWidth, playerHeight)
 
 	// Drawing destination of the player

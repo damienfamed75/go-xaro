@@ -11,9 +11,11 @@ If you're on Linux Ubuntu then you need to install the test branch of Golang lik
 
 `sudo apt-get install golang-go`
 
+Then you can install the dependencies like this:
 
 `go get -v -u [insert dependency]`
 
 ## Dependencies
 - github.com/gen2brain/raylib-go/raylib
 - github.com/SolarLune/GoAseprite
+- github.com/smartystreets/goconvey

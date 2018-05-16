@@ -18,30 +18,32 @@ func main() {
 
 	/*********************Configure*********************/
 	system.SystemInit()
-	player := newPlayer()
+	player := gameobjects.NewPlayer()
+	cam := gameobjects.NewCamera()
 
 	walls := []gameobjects.Wall{
 		gameobjects.NewWall(0, 600, 640, 40, r.Maroon),
 		gameobjects.NewWall(0, 0, 40, 640, r.Pink),
 		gameobjects.NewWall(0, 0, 640, 40, r.Orange),
 		gameobjects.NewWall(600, 0, 40, 640, r.Gold),
-		gameobjects.NewWall(280, 0, 80, 120, r.Yellow),
+		gameobjects.NewWall(320, 0, 1, 120, r.Yellow),
 	}
 
 	/*********************Game Loop*********************/
 	for !r.WindowShouldClose() {
 		/************Update************/
 		system.EscapeCheck()
-
-		player.update(r.GetFrameTime(), walls)
+		cam.Update(player.Update(r.GetFrameTime(), walls))
 		/***********Drawing***********/
 		r.BeginDrawing()
+		r.BeginMode2D(r.Camera2D(*cam))
 		{
 			r.ClearBackground(r.Black)
 
-			player.draw()
+			player.Draw()
 			gameobjects.DrawPlatforms(walls...)
 		}
+		r.EndMode2D()
 		r.EndDrawing()
 	}
 	r.CloseWindow()

@@ -1,1 +1,1 @@
-go run player.go main.go
+go run main.go
