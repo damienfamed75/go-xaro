@@ -3,7 +3,7 @@ package gameobjects
 import (
 	"github.com/damienfamed75/go-xaro/system"
 	"github.com/gen2brain/raylib-go/raylib"
-	"github.com/solarlune/GoAseprite"
+	"github.com/solarlune/goaseprite"
 )
 
 // Player is the object of the played protagonist
