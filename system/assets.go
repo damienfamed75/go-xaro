@@ -1,8 +1,6 @@
 package system
 
 import (
-	"fmt"
-
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -15,9 +13,6 @@ func GetTexture(textureName string) raylib.Texture2D {
 	if !ok {
 		LoadedTextures[textureName] = raylib.LoadTexture(textureName)
 	}
-
-	fmt.Println("Loaded Textures: ")
-	fmt.Println(LoadedTextures)
 
 	return LoadedTextures[textureName]
 }

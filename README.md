@@ -19,3 +19,4 @@ Then you can install the dependencies like this:
 - github.com/gen2brain/raylib-go/raylib
 - github.com/SolarLune/GoAseprite
 - github.com/smartystreets/goconvey
+- github.com/lafriks/go-tiled

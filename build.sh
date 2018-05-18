@@ -1,1 +1,1 @@
-go run main.go
+go build -o game.exe && game.exe
