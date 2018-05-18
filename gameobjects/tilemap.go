@@ -10,6 +10,7 @@ import (
 	tiled "github.com/lafriks/go-tiled"
 )
 
+// XaroTileMap is the Xaro version of a go-tiled tilemap
 type XaroTileMap tiled.Map
 
 // NewTileMap will return a new go-tiled
