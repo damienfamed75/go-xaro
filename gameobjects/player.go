@@ -20,28 +20,27 @@ const gravity = 400
 
 var (
 	moveSpd float32 = 120
-	jumpFrc float32 = -250
 )
 
 // NewPlayer generates a new player object
 func NewPlayer() Player {
 	p := Player{}
 
-	p.Ase = goaseprite.New("assets/graphics/samus.json")
+	p.Ase = goaseprite.New("assets/graphics/player.json", "player")
 	p.Texture = system.GetTexture(p.Ase.ImagePath)
 	p.Velocity = raylib.NewVector2(0, 0)
 	p.Position = raylib.NewVector2(float32(system.HalfW())-float32((p.Ase.FrameWidth/2)), float32(system.HalfH())-float32((p.Ase.FrameHeight/2)))
 	p.direction = "right"
-	p.Scale = 1.5
+	p.Scale = 1.0
 
 	// Queues the Run animation
-	p.Ase.Play("Run")
+	//p.Ase.Play("Run")
 
 	return p
 }
 
 // Update runs every frame and should be used for inputs or effects on the player
-func (p *Player) Update(dt float32, walls []Wall) (raylib.Vector2, raylib.Vector2) {
+func (p *Player) Update(dt float32) (raylib.Vector2, raylib.Vector2) {
 	p.Ase.Update(dt) // Run this every single frame to keep the animation going
 
 	p.Velocity.X = 0

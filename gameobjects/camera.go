@@ -16,7 +16,7 @@ func NewCamera() *XaroCamera {
 
 	cam.Offset = raylib.Vector2{X: 0, Y: 0}
 	cam.Rotation = 0
-	cam.Zoom = 1
+	cam.Zoom = 4.5
 
 	return &cam
 }

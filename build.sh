@@ -1,1 +1,1 @@
-go build -o game.exe && game.exe
+go build -o bin/game.exe && ./bin/game.exe

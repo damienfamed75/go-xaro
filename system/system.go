@@ -10,11 +10,11 @@ var (
 
 // EscapeCheck is used to close the window and gets called
 // int the update portion of the game loop.
-func EscapeCheck() {
+/*func EscapeCheck() {
 	if raylib.IsKeyDown(raylib.KeyEscape) {
 		raylib.CloseWindow()
 	}
-}
+}*/
 
 // HalfH returns half of the screen height
 func HalfH() int32 { return raylib.GetScreenHeight() / 2 }
