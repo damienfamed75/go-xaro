@@ -20,7 +20,7 @@ func main() {
 	r.InitWindow(scrWidth, scrHeight, "Xaro")
 	r.SetTargetFPS(60)
 	r.SetExitKey(raylib.KeyEscape)
-	system.SystemInit()
+	system.SystemInit() // configure the game settings and controls
 
 	/*********************Variables*********************/
 	player := gameobjects.NewPlayer()

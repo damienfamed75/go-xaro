@@ -1,9 +1,9 @@
 package gameobjects
 
 import (
+	"github.com/damienfamed75/GoAseprite"
 	"github.com/damienfamed75/go-xaro/system"
 	"github.com/gen2brain/raylib-go/raylib"
-	"github.com/solarlune/goaseprite"
 )
 
 // Player is the object of the played protagonist
@@ -15,8 +15,6 @@ type Player struct {
 	Scale     float32                 // Multiplier for how large the player is on the screen
 	direction string                  // Whether the player is facing right or left
 }
-
-const gravity = 400
 
 var (
 	moveSpd float32 = 120
