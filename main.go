@@ -11,17 +11,18 @@ const (
 	scrWidth  = 1024
 	scrHeight = 720
 
-	mapPath = "assets/maps/testmap.tmx"
-	tileset = "assets/graphics/BasicTileSet.png"
+	mapPath = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\maps\\testmap.tmx"
+	tileset = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\graphics\\BasicTileSet.png"
 )
 
 func main() {
 	r.SetConfigFlags(r.FlagWindowResizable)
 	r.InitWindow(scrWidth, scrHeight, "Xaro")
-	r.SetTargetFPS(60)
 	r.SetExitKey(raylib.KeyEscape)
-	system.SystemInit() // configure the game settings and controls
+	r.SetTargetFPS(144)
+	system.Init() // configure the game settings and controls
 
+	defer r.CloseWindow()
 	/*********************Variables*********************/
 	player := gameobjects.NewPlayer()
 	cam := gameobjects.NewCamera()
@@ -44,5 +45,4 @@ func main() {
 		r.EndMode2D()
 		r.EndDrawing()
 	}
-	r.CloseWindow()
 }
