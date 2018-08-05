@@ -11,6 +11,8 @@ import (
 var (
 	KeyBindings = make(map[string]int32)
 	Config      Configuration
+	MapPath     string
+	TileSet     string
 )
 
 // EscapeCheck is used to close the window and gets called
@@ -24,7 +26,7 @@ func HalfW() int32 { return raylib.GetScreenWidth() / 2 }
 
 // Init initializes the controls
 func Init() {
-	_, Config = LoadViperConfig("/assets/config/")
+	_, Config = LoadViperConfig("/config/")
 
 	KeyBindings["left"] = Config.Controls.Left
 	KeyBindings["right"] = Config.Controls.Right
@@ -32,6 +34,11 @@ func Init() {
 	KeyBindings["down"] = Config.Controls.Down
 	KeyBindings["action"] = raylib.MouseLeftButton
 	KeyBindings["menu"] = Config.Controls.Menu
+
+	wd, _ := os.Getwd()
+
+	MapPath = wd + "/assets/maps/testmap.tmx"
+	TileSet = wd + "/assets/graphics/BasicTileSet.png"
 }
 
 func LoadViperConfig(file string) (*viper.Viper, Configuration) {

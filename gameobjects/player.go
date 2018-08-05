@@ -1,9 +1,11 @@
 package gameobjects
 
 import (
-	"github.com/damienfamed75/GoAseprite"
+	"os"
+
 	"github.com/damienfamed75/go-xaro/system"
 	"github.com/gen2brain/raylib-go/raylib"
+	goaseprite "github.com/solarlune/GoAseprite"
 )
 
 // Player is the object of the played protagonist
@@ -28,8 +30,9 @@ var (
 // NewPlayer generates a new player object
 func NewPlayer() *Player {
 	p := &Player{}
+	wd, _ := os.Getwd()
 
-	p.Ase = goaseprite.New("D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\graphics\\player.json", "player")
+	p.Ase = goaseprite.New(wd+"/assets/graphics/player.json", "player")
 	p.Texture = system.GetTexture(p.Ase.ImagePath)
 	p.Velocity = raylib.NewVector2(0, 0)
 	p.Position = raylib.NewVector2(float32(system.HalfW())-float32((p.Ase.FrameWidth/2)), float32(system.HalfH())-float32((p.Ase.FrameHeight/2)))

@@ -8,6 +8,10 @@ import (
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
+var (
+	directions = []string{"left", "right", "up", "down"}
+)
+
 func (p *Player) updateMovement() {
 	if raylibIsKeyDown(system.KeyBindings["left"]) {
 		p.Velocity.X = -p.MoveSpeed
@@ -35,45 +39,42 @@ func (p *Player) updateAction() {
 }
 
 func (p *Player) updateAnimation() {
-	switch {
-	case raylib.IsMouseButtonDown(system.KeyBindings["action"]):
-		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
-			break
-		} else if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
-			if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
-				fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
-				p.Ase.Play(fix + "action")
-			} else {
-				p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
-			}
+	// switch {
+	// case raylib.IsMouseButtonDown(system.KeyBindings["action"]):
+	// 	if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
+	// 		break
+	// 	} else if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
+	// 		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
+	// 			fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
+	// 			p.Ase.Play(fix + "action")
+	// 		} else {
+	// 			p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
+	// 		}
+	// 	}
+	// case raylibIsKeyDown(system.KeyBindings["left"]):
+	// 	p.Ase.Play("left")
+	// case raylibIsKeyDown(system.KeyBindings["up"]):
+	// 	p.Ase.Play("up")
+	// case raylibIsKeyDown(system.KeyBindings["down"]):
+	// 	p.Ase.Play("down")
+	// case raylibIsKeyDown(system.KeyBindings["right"]):
+	// 	p.Ase.Play("right")
+	// }
+
+	if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
+		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
+			fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
+			p.Ase.Play(fix + "action")
+		} else if !strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
+			p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
 		}
-		for i := range system.KeyBindings {
-			if raylibIsKeyDown(system.KeyBindings[i]) {
-				p.Ase.Play(i)
-			}
-		}
-	case raylibIsKeyDown(system.KeyBindings["left"]):
-		p.Ase.Play("left")
-	case raylibIsKeyDown(system.KeyBindings["up"]):
-		p.Ase.Play("up")
-	case raylibIsKeyDown(system.KeyBindings["down"]):
-		p.Ase.Play("down")
-	case raylibIsKeyDown(system.KeyBindings["right"]):
-		p.Ase.Play("right")
 	}
-	// if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
-	// 	if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
-	// 		fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
-	// 		p.Ase.Play(fix + "action")
-	// 	} else if !strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
-	// 		p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
-	// 	}
-	// }
-	// for i := range system.KeyBindings {
-	// 	if raylibIsKeyDown(system.KeyBindings[i]) {
-	// 		p.Ase.Play(i)
-	// 	}
-	// }
+
+	for _, dir := range directions {
+		if raylibIsKeyDown(system.KeyBindings[dir]) {
+			p.Ase.Play(dir)
+		}
+	}
 
 }
 

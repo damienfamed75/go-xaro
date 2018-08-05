@@ -6,11 +6,6 @@ import (
 	r "github.com/gen2brain/raylib-go/raylib"
 )
 
-const (
-	mapPath = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\maps\\testmap.tmx"
-	tileset = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\graphics\\BasicTileSet.png"
-)
-
 func main() {
 	system.Init()
 
@@ -23,7 +18,7 @@ func main() {
 	/*********************Variables*********************/
 	player := gameobjects.NewPlayer()
 	cam := gameobjects.NewCamera()
-	tileMap := gameobjects.NewTileMap(mapPath)
+	tileMap := gameobjects.NewTileMap(system.MapPath)
 
 	/*********************Game Loop*********************/
 	for !r.WindowShouldClose() {
@@ -36,7 +31,7 @@ func main() {
 		{
 			r.ClearBackground(r.Black)
 
-			tileMap.Draw(tileset)
+			tileMap.Draw(system.TileSet)
 			player.Draw()
 		}
 		r.EndMode2D()
