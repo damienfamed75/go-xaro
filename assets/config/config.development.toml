@@ -1,0 +1,24 @@
+title = "Development Configuration"
+
+[connection]
+  ip = "127.0.0.1"
+  port = "8081"
+
+[window]
+  height = 600
+  monitor = 1
+  targetfps = 144
+  width = 800
+  winmode = "windowed"
+
+[settings]
+    SoundVolume = 1.0
+    MusicVolume = 1.0
+
+[controls]
+    left = 65
+    right = 68
+    up = 87
+    down = 83
+    # action is not rebindable
+    menu = 258

@@ -3,24 +3,21 @@ package main
 import (
 	"github.com/damienfamed75/go-xaro/gameobjects"
 	"github.com/damienfamed75/go-xaro/system"
-	"github.com/gen2brain/raylib-go/raylib"
 	r "github.com/gen2brain/raylib-go/raylib"
 )
 
 const (
-	scrWidth  = 1024
-	scrHeight = 720
-
 	mapPath = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\maps\\testmap.tmx"
 	tileset = "D:\\gocode\\src\\github.com\\damienfamed75\\go-xaro\\assets\\graphics\\BasicTileSet.png"
 )
 
 func main() {
-	r.SetConfigFlags(r.FlagWindowResizable)
-	r.InitWindow(scrWidth, scrHeight, "Xaro")
-	r.SetExitKey(raylib.KeyEscape)
-	r.SetTargetFPS(144)
-	system.Init() // configure the game settings and controls
+	system.Init()
+
+	r.SetConfigFlags(system.Config.Window.Mode)
+	r.InitWindow(system.Config.Window.Width, system.Config.Window.Height, "Xaro")
+	r.SetTargetFPS(system.Config.Window.TargetFPS)
+	r.SetExitKey(r.KeyEscape)
 
 	defer r.CloseWindow()
 	/*********************Variables*********************/

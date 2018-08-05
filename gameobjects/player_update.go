@@ -28,8 +28,7 @@ func (p *Player) updateAction() {
 		if p.Ase.CurrentFrame == p.Ase.CurrentAnimation.Start && !p.shot {
 			fmt.Println("SHOOT ~ >>>--------|>")
 			p.shot = true
-		}
-		if p.Ase.CurrentFrame == p.Ase.CurrentAnimation.End {
+		} else if p.Ase.CurrentFrame == p.Ase.CurrentAnimation.End {
 			p.shot = false
 		}
 	}
@@ -40,11 +39,18 @@ func (p *Player) updateAnimation() {
 	case raylib.IsMouseButtonDown(system.KeyBindings["action"]):
 		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
 			break
-		} else if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
-			fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
-			p.Ase.Play(fix + "action")
-		} else {
-			p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
+		} else if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
+			if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
+				fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
+				p.Ase.Play(fix + "action")
+			} else {
+				p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
+			}
+		}
+		for i := range system.KeyBindings {
+			if raylibIsKeyDown(system.KeyBindings[i]) {
+				p.Ase.Play(i)
+			}
 		}
 	case raylibIsKeyDown(system.KeyBindings["left"]):
 		p.Ase.Play("left")
@@ -55,6 +61,20 @@ func (p *Player) updateAnimation() {
 	case raylibIsKeyDown(system.KeyBindings["right"]):
 		p.Ase.Play("right")
 	}
+	// if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
+	// 	if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
+	// 		fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
+	// 		p.Ase.Play(fix + "action")
+	// 	} else if !strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
+	// 		p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
+	// 	}
+	// }
+	// for i := range system.KeyBindings {
+	// 	if raylibIsKeyDown(system.KeyBindings[i]) {
+	// 		p.Ase.Play(i)
+	// 	}
+	// }
+
 }
 
 func (p *Player) updateIdleAnimation() {

@@ -9,8 +9,7 @@ var LoadedTextures = make(map[string]raylib.Texture2D)
 
 // GetTexture returns the picture of a spritesheet
 func GetTexture(textureName string) raylib.Texture2D {
-	_, ok := LoadedTextures[textureName]
-	if !ok {
+	if _, ok := LoadedTextures[textureName]; !ok {
 		LoadedTextures[textureName] = raylib.LoadTexture(textureName)
 	}
 
