@@ -18,9 +18,6 @@ type Player struct {
 	Scale      float32                 // Multiplier for how large the player is on the screen
 	ShootSpeed float32                 // Shooting speed that will be upgraded
 	MoveSpeed  float32                 // Moving speed that will be upgraded
-
-	// --- Private --- //
-	shot bool
 }
 
 var (
@@ -40,8 +37,6 @@ func NewPlayer() *Player {
 	p.ShootSpeed = 0.5
 	p.MoveSpeed = 120
 
-	p.shot = false
-
 	// Queues an animation
 	p.Ase.Play("right")
 
@@ -55,10 +50,8 @@ func (p *Player) Update(dt float32) (raylib.Vector2, raylib.Vector2) {
 	p.Velocity.X, p.Velocity.Y = 0, 0
 
 	p.updateMovement()
-	p.updateAction()
 	p.updateAnimation()
 	p.updateIdleAnimation()
-	p.updateActionAnimationSpeed()
 
 	// Apply the velocity to player's position
 	difference := raylib.NewVector2(p.Velocity.X*dt, p.Velocity.Y*dt)

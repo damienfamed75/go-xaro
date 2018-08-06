@@ -14,7 +14,7 @@ var pAfterPos raylib.Vector2
 func NewCamera() *XaroCamera {
 	cam := XaroCamera{}
 
-	cam.Offset = raylib.Vector2{X: 0, Y: 0}
+	cam.Offset = raylib.Vector2{X: 0, Y: 0} // Offset is the camera position
 	cam.Rotation = 0
 	cam.Zoom = 4.5
 

@@ -1,8 +1,8 @@
 package gameobjects
 
 import (
-	"fmt"
 	"strings"
+	"time"
 
 	"github.com/damienfamed75/go-xaro/system"
 	"github.com/gen2brain/raylib-go/raylib"
@@ -10,6 +10,8 @@ import (
 
 var (
 	directions = []string{"left", "right", "up", "down"}
+	timeStamp  = time.Now().UnixNano() / int64(time.Millisecond)
+	timer      time.Timer
 )
 
 func (p *Player) updateMovement() {
@@ -27,55 +29,35 @@ func (p *Player) updateMovement() {
 	}
 }
 
-func (p *Player) updateAction() {
+func (p *Player) inAction() bool {
 	if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
-		if p.Ase.CurrentFrame == p.Ase.CurrentAnimation.Start && !p.shot {
-			fmt.Println("SHOOT ~ >>>--------|>")
-			p.shot = true
-		} else if p.Ase.CurrentFrame == p.Ase.CurrentAnimation.End {
-			p.shot = false
+		p.Ase.PlaySpeed = p.ShootSpeed
+		animName := p.Ase.CurrentAnimation.Name
+
+		if strings.HasSuffix(animName, "idle") {
+			p.Ase.Play(strings.TrimSuffix(animName, "idle") + "action")
+		} else if !strings.HasSuffix(animName, "action") {
+			p.Ase.Play(animName + "action")
 		}
+
+		if timeStamp += int64(raylib.GetFrameTime()); timeStamp <= time.Now().UnixNano()/int64(time.Millisecond) {
+			timeStamp = time.Now().UnixNano()/int64(time.Millisecond) + int64((float32(p.Ase.CurrentAnimation.End-(p.Ase.CurrentAnimation.Start-1))*100)/p.ShootSpeed)
+			p.Action()
+		}
+		return true
 	}
+	return false
 }
 
 func (p *Player) updateAnimation() {
-	// switch {
-	// case raylib.IsMouseButtonDown(system.KeyBindings["action"]):
-	// 	if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
-	// 		break
-	// 	} else if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
-	// 		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
-	// 			fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
-	// 			p.Ase.Play(fix + "action")
-	// 		} else {
-	// 			p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
-	// 		}
-	// 	}
-	// case raylibIsKeyDown(system.KeyBindings["left"]):
-	// 	p.Ase.Play("left")
-	// case raylibIsKeyDown(system.KeyBindings["up"]):
-	// 	p.Ase.Play("up")
-	// case raylibIsKeyDown(system.KeyBindings["down"]):
-	// 	p.Ase.Play("down")
-	// case raylibIsKeyDown(system.KeyBindings["right"]):
-	// 	p.Ase.Play("right")
-	// }
-
-	if raylib.IsMouseButtonDown(system.KeyBindings["action"]) {
-		if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "idle") {
-			fix := strings.TrimSuffix(p.Ase.CurrentAnimation.Name, "idle")
-			p.Ase.Play(fix + "action")
-		} else if !strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
-			p.Ase.Play(p.Ase.CurrentAnimation.Name + "action")
+	if !p.inAction() {
+		p.Ase.PlaySpeed = 1.0
+		for _, dir := range directions {
+			if raylibIsKeyDown(system.KeyBindings[dir]) {
+				p.Ase.Play(dir)
+			}
 		}
 	}
-
-	for _, dir := range directions {
-		if raylibIsKeyDown(system.KeyBindings[dir]) {
-			p.Ase.Play(dir)
-		}
-	}
-
 }
 
 func (p *Player) updateIdleAnimation() {
@@ -86,13 +68,5 @@ func (p *Player) updateIdleAnimation() {
 		} else {
 			p.Ase.Play(p.Ase.CurrentAnimation.Name + "idle")
 		}
-	}
-}
-
-func (p *Player) updateActionAnimationSpeed() {
-	if strings.HasSuffix(p.Ase.CurrentAnimation.Name, "action") {
-		p.Ase.PlaySpeed = p.ShootSpeed
-	} else {
-		p.Ase.PlaySpeed = 1.0
 	}
 }
