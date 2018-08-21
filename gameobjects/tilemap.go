@@ -44,18 +44,37 @@ func (tilemap *XaroTileMap) Draw(tileset string) {
 			id := int32(tile.ID) // the id based on the position in tileset
 
 			// the destination where the sprites will be rendered
+			// tileDestX := int32(tileIndex%tilemap.Width) * int32(tileW)
 			tileDestX := int32(tileIndex%tilemap.Width) * int32(tileW)
-			tileDestY := int32(tileIndex / tilemap.Width * int(tileW))
+			tileDestY := int32(int32(tileIndex)/int32(tilemap.Width)) * int32(tileH)
+			// tileDestY := int32(tileIndex / tilemap.Width * int(tileW))
 
 			// tileSrc are the coordinates that the sprites appear in the tilesheet
 			tileSrcX := id % (tilemapImage.Width / int32(tileW))
 			tileSrcY := int32(id / (tilemapImage.Width / int32(tileW)))
 
+			source := raylib.NewRectangle(float32(tileSrcX)*tileW, float32(tileSrcY)*tileH, tileW, tileH)
+
+			var rotation float32
+
+			if tile.HorizontalFlip {
+				source.Width *= -1
+			}
+
+			if tile.VerticalFlip {
+				source.Height *= -1
+			}
+
+			if tile.DiagonalFlip {
+				source.Width *= -1
+				rotation = 90
+			}
+
 			// Draw the tile using the specific tile.
 			raylib.DrawTexturePro(tilemapImage,
-				raylib.NewRectangle(float32(tileSrcX)*tileW, float32(tileSrcY)*tileH, tileW, tileH),
+				source,
 				raylib.NewRectangle(float32(tileDestX), float32(tileDestY), tileW, tileH),
-				raylib.NewVector2(0, 0), 0, raylib.White)
+				raylib.NewVector2(tileW/2, tileH/2), rotation, raylib.White)
 		}
 	}
 }

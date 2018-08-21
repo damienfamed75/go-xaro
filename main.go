@@ -19,9 +19,9 @@ func main() {
 
 	defer r.CloseWindow()
 	/*********************Variables*********************/
-	player := gameobjects.NewPlayer()
-	cam := gameobjects.NewCamera()
 	tileMap := gameobjects.NewTileMap(system.MapPath)
+	player := gameobjects.NewPlayer(r.NewVector2(float32(system.HalfW()), float32(system.HalfH())))
+	cam := gameobjects.NewCamera()
 
 	/*********************Game Loop*********************/
 	for !r.WindowShouldClose() {
@@ -36,7 +36,7 @@ func main() {
 
 			tileMap.Draw(system.TileSet)
 
-			//offx, offy := cam.Offset.X-float32(player.Texture.Width/2), cam.Offset.Y-float32(player.Texture.Height/2)
+			// offx, offy := cam.Offset.X-float32(player.Texture.Width/2), cam.Offset.Y-float32(player.Texture.Height/2)
 			// x, y := int32((r.GetMousePosition().X)+298), int32((r.GetMousePosition().Y)+218)
 
 			x, y := int32((r.GetMousePosition().X)-cam.Offset.X), int32((r.GetMousePosition().Y)-cam.Offset.Y)

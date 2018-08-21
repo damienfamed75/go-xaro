@@ -25,14 +25,14 @@ var (
 )
 
 // NewPlayer generates a new player object
-func NewPlayer() *Player {
+func NewPlayer(spawnPos raylib.Vector2) *Player {
 	p := &Player{}
 	wd, _ := os.Getwd()
 
 	p.Ase = goaseprite.New(wd+"/assets/graphics/player.json", "player")
 	p.Texture = system.GetTexture(p.Ase.ImagePath)
 	p.Velocity = raylib.NewVector2(0, 0)
-	p.Position = raylib.NewVector2(float32(system.HalfW())-float32((p.Ase.FrameWidth/2)), float32(system.HalfH())-float32((p.Ase.FrameHeight/2)))
+	p.Position = spawnPos
 	p.Scale = 1.0
 	p.ShootSpeed = 0.5
 	p.MoveSpeed = 120
@@ -76,5 +76,5 @@ func (p *Player) Draw() {
 		playerW*p.Scale, playerH*p.Scale)
 
 	// Draw the player finally
-	raylib.DrawTexturePro(p.Texture, src, dest, raylib.Vector2{}, 0, raylib.White)
+	raylib.DrawTexturePro(p.Texture, src, dest, raylib.NewVector2(playerW/2, playerH/2), 0, raylib.White)
 }
